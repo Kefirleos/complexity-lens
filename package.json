@@ -1,6 +1,7 @@
 {
   "name": "complexity-lens",
-  "displayName": "complexity-lens",
+  "displayName": "Complexity Lens",
+  "publisher": "complexity-lens-local",
   "description": "Cyclomatic complexity CodeLens for TS/JS",
   "version": "0.0.1",
   "engines": {
@@ -10,10 +11,10 @@
     "Other"
   ],
   "activationEvents": [
-  "onLanguage:javascript",
-  "onLanguage:javascriptreact",
-  "onLanguage:typescript",
-  "onLanguage:typescriptreact"
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "main": "./out/extension.js",
   "scripts": {
@@ -23,7 +24,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "test:unit": "npm run compile && npm run lint && mocha --ui tdd out/test/analyzer.test.js"
+    "test:unit": "npm run compile && npm run lint && mocha --ui tdd out/test/analyzer.test.js",
+    "package": "vsce package --allow-missing-repository --skip-license"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -31,6 +33,7 @@
     "@types/vscode": "^1.144.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.0.0",
+    "@vscode/vsce": "^4.1.0",
     "eslint": "^10.5.0",
     "mocha": "^12.0.3",
     "typescript-eslint": "^8.61.1"
