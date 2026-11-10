@@ -25,7 +25,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "test:unit": "npm run compile && npm run lint && mocha --ui tdd out/test/analyzer.test.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -34,6 +35,7 @@
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.0.0",
     "eslint": "^10.5.0",
+    "mocha": "^12.0.3",
     "typescript-eslint": "^8.61.1"
   },
   "overrides": {
