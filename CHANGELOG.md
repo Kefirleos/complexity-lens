@@ -1,9 +1,10 @@
-# Change Log
-
-All notable changes to the "complexity-lens" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+# Changelog
 
 ## [Unreleased]
 
-- Initial release
+### Added
+
+- Расчёт цикломатической сложности функций JavaScript и TypeScript.
+- Вывод сложности через CodeLens.
+- Просмотр сведений по нажатию на CodeLens.
+- Модульные тесты анализатора и интеграционные тесты CodeLens.

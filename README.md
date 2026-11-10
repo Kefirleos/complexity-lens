@@ -1,71 +1,94 @@
-# complexity-lens README
+# Complexity Lens
 
-This is the README for your extension "complexity-lens". After writing up a brief description, we recommend including the following sections.
+Расширение для VS Code, которое показывает цикломатическую сложность
+функций JavaScript и TypeScript прямо в редакторе.
 
-## Features
+## Возможности
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Подпись «Сложность: N» над функциями.
+- Поддержка JavaScript, TypeScript, JSX и TSX.
+- Анализ обычных и стрелочных функций, методов, конструкторов,
+  геттеров и сеттеров.
+- Отдельный подсчёт вложенных функций.
+- Пересчёт сложности при изменении кода.
+- Просмотр имени функции и её сложности по нажатию на подпись.
 
-For example if there is an image subfolder under your extension project workspace:
+## Пример
 
-\!\[feature X\]\(images/feature-x.png\)
+```typescript
+function check(value: number): boolean {
+    if (value > 0 && value < 10) {
+        return true;
+    }
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+    return false;
+}
+```
 
-## Requirements
+Над функцией появится подпись `Сложность: 3`:
+базовое значение 1, условие `if` и оператор `&&`.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Правила подсчёта
 
-## Extension Settings
+Начальная сложность каждой функции равна 1.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Каждая из следующих конструкций добавляет 1:
 
-For example:
+| Конструкция | Что учитывается |
+| --- | --- |
+| `if` | Каждое условие, включая `else if` |
+| Циклы | `for`, `for...in`, `for...of`, `while`, `do...while` |
+| `case` | Каждая ветка, кроме `default` |
+| `catch` | Каждый блок обработки исключения |
+| `condition ? a : b` | Каждый тернарный оператор |
+| `&&`, `||`, `??` | Каждый оператор |
 
-This extension contributes the following settings:
+`else`, `default` и `finally` отдельно не увеличивают сложность.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Вложенные функции анализируются отдельно. Их ветвления
+не увеличивают сложность внешней функции.
 
-## Known Issues
+## Использование
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+1. Откройте файл JavaScript или TypeScript.
+2. Убедитесь, что включена настройка VS Code `editor.codeLens`.
+3. Над функциями появятся подписи со сложностью.
+4. Нажмите на подпись для просмотра сведений о функции.
 
-## Release Notes
+## Запуск для разработки
 
-Users appreciate release notes as you update your extension.
+Требуются Node.js, npm и VS Code версии, совместимой с полем
+`engines.vscode` в `package.json`.
 
-### 1.0.0
+```bash
+npm ci
+npm run compile
+```
 
-Initial release of ...
+Откройте проект в VS Code и нажмите F5.
+В окне Extension Development Host откройте файл с кодом.
 
-### 1.0.1
+## Проверки
 
-Fixed issue #.
+```bash
+npm run compile
+npm run lint
+npm run test:unit
+npm test
+```
 
-### 1.1.0
+- `test:unit` — тесты анализатора без запуска VS Code.
+- `test` — тесты анализатора и интеграционные тесты в VS Code.
 
-Added features X, Y, and Z.
+При первом запуске интеграционных тестов может потребоваться
+интернет для загрузки тестовой версии VS Code.
 
----
+## Ограничения
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Используется синтаксический анализ: выполнение программы
+  и достижимость веток не проверяются.
+- Анализируется тело функции. Выражения в значениях параметров
+  по умолчанию не учитываются.
+- Логические присваивания `&&=`, `||=` и `??=` не учитываются.
+- Для анонимных функций без определяемого имени
+  отображается `<anonymous>`.
